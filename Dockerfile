@@ -1,17 +1,20 @@
 
-FROM nginx:latest
+FROM python:3.11.8-slim
+
+
+WORKDIR /app
 
 
 LABEL authors="vslkm"
 
 
-RUN rm -rf /usr/share/nginx/html/*
+COPY . /app
 
 
-COPY . /usr/share/nginx/html/
+RUN pip install --no-cache-dir flask
 
 
-EXPOSE 80
+EXPOSE 5000
 
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["python", "app.py"]

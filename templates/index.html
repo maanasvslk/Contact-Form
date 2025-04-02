@@ -34,26 +34,42 @@
 </div>
 
 <script>
-  document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent actual form submission
+  document.getElementById("contactForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
     // Get form values
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let message = document.getElementById("message").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
 
     if (!name || !email || !message) {
       alert("Please fill in all fields.");
       return;
     }
 
-    console.log("Form Submitted:", { name, email, message });
+    try {
+      const response = await fetch('http://localhost:5000/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message })
+      });
 
-    // Show success message
-    document.getElementById("responseMessage").classList.remove("hidden");
+      const result = await response.json();
 
-    // Clear form
-    document.getElementById("contactForm").reset();
+      if (response.ok) {
+        // Show success message
+        document.getElementById("responseMessage").classList.remove("hidden");
+        // Clear form
+        document.getElementById("contactForm").reset();
+      } else {
+        alert(result.error || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send message');
+    }
   });
 </script>
 
