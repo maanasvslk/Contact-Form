@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/maanasvslk/maanasvslk-contact-form.git', branch: 'main'
+                git url: 'https://github.com/maanasvslk/Contact-Form.git',
+                    branch: 'main',
+                    credentialsId: 'github-pat'
             }
         }
         stage('Build Docker Image') {
