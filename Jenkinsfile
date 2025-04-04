@@ -1,16 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HOST = 'tcp://jenkins-docker-daemon:2375'
+        DOCKER_HOST = 'tcp://host.docker.internal:2375' // Use this for Docker Desktop on Windows
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/maanasvslk/Contact-Form.git',
-                    branch: 'main',
-                    credentialsId: 'github-pat'
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t maanasvslk-contact-form:latest .'
