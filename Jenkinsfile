@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HOST = 'tcp://host.docker.internal:2376' // Use this for Docker Desktop on Windows
+        DOCKER_HOST = 'tcp://host.docker.internal:2376'
     }
     stages {
         stage('Build Docker Image') {
