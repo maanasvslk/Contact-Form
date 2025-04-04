@@ -1,12 +1,17 @@
 pipeline {
     agent any
+    // Disable the default SCM checkout
+    options {
+        skipDefaultCheckout(true)
+    }
     stages {
         stage('Checkout Code') {
             steps {
-                // Explicitly specify credentials if the repo is private
+                // Explicitly clean the workspace before checkout
+                deleteDir()
                 git branch: 'main',
                     url: 'https://github.com/maanasvslk/Contact-Form.git',
-                    credentialsId: 'git_id' // Replace with your Jenkins credential ID
+                    credentialsId: 'git_id'
             }
         }
         stage('Build Docker Image') {
@@ -24,7 +29,6 @@ pipeline {
     }
     post {
         always {
-            // Wrap the sh step in a node block to ensure workspace context
             node('') {
                 sh 'docker image prune -f'
             }
