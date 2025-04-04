@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HOST = 'tcp://jenkins-docker-daemon:2375'
+        DOCKER_HOST = 'tcp://jenkins-docker-daemon:2375' // Connects to DinD daemon
     }
     stages {
         stage('Checkout') {
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 sh 'docker stop contact-web || true'
                 sh 'docker rm contact-web || true'
-                sh 'docker run -d -p 80:5000 -v $(pwd)/contacts.db:/app/contacts.db --name contact-web maanasvslk-contact-form:latest'
+                sh 'docker run -d -p 80:5000 -v contacts-db:/app/contacts.db --name contact-web maanasvslk-contact-form:latest'
             }
         }
     }
