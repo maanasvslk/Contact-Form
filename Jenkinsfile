@@ -3,7 +3,10 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/maanasvslk/Contact-Form.git'
+                // Explicitly specify credentials if the repo is private
+                git branch: 'main',
+                    url: 'https://github.com/maanasvslk/Contact-Form.git',
+                    credentialsId: 'git_id' // Replace with your Jenkins credential ID
             }
         }
         stage('Build Docker Image') {
@@ -21,7 +24,10 @@ pipeline {
     }
     post {
         always {
-            sh 'docker image prune -f'
+            // Wrap the sh step in a node block to ensure workspace context
+            node('') {
+                sh 'docker image prune -f'
+            }
         }
         success {
             echo 'Deployment successful!'
