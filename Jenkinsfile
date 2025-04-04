@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HOST = 'tcp://jenkins-docker-daemon:2375'
+    }
     stages {
         stage('Checkout') {
             steps {
