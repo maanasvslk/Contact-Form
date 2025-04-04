@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HOST = 'tcp://host.docker.internal:2376'
-    }
     stages {
         stage('Build Docker Image') {
             steps {
