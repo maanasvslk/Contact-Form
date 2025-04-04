@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Initialize the SQLite database
 def init_db():
-    conn = sqlite3.connect('contacts.db')
+    conn = sqlite3.connect('/app/data/contacts.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS contacts
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +34,7 @@ def submit_contact():
         if not all([name, email, message]):
             return jsonify({'error': 'All fields are required'}), 400
 
-        conn = sqlite3.connect('contacts.db')
+        conn = sqlite3.connect('/app/data/contacts.db')
         c = conn.cursor()
         c.execute('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)',
                   (name, email, message))
@@ -50,7 +50,7 @@ def submit_contact():
 @app.route('/api/contacts', methods=['GET'])
 def get_contacts():
     try:
-        conn = sqlite3.connect('contacts.db')
+        conn = sqlite3.connect('/app/data/contacts.db')
         c = conn.cursor()
         c.execute('SELECT * FROM contacts ORDER BY timestamp DESC')
         contacts = c.fetchall()
@@ -73,4 +73,4 @@ def get_contacts():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)  # Debug off for production
